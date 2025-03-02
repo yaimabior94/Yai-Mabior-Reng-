@@ -1,0 +1,51 @@
+def square_area():
+    side = float(input("Enter the side length of the square: "))
+    print("Area of square:", side ** 2)
+
+def calculate_change():
+    total_purchase = float(input("Enter total purchase amount: "))
+    amount_paid = float(input("Enter amount paid: "))
+    print("Change:", amount_paid - total_purchase)
+
+def basic_operations():
+    a = float(input("Enter first number: "))
+    b = float(input("Enter second number: "))
+    print(f"Addition: {a + b}\nSubtraction: {a - b}\nMultiplication: {a * b}\nDivision: {a / b if b != 0 else 'Undefined (division by zero)'}")
+
+def discounted_price():
+    price = float(input("Enter the original price: "))
+    print("Total payment after 20% discount:", price * 0.8)
+
+def sheep_profit():
+    num_sheep = int(input("Enter number of sheep sold: "))
+    base_price = 2500000
+    selling_price = 3000000
+    capital = num_sheep * base_price
+    profit = num_sheep * (selling_price - base_price)
+    print(f"Total capital spent: {capital}\nTotal profit: {profit}")
+
+def swap_variables():
+    x = int(input("Enter value of x: "))
+    y = int(input("Enter value of y: "))
+    x, y = y, x
+    print(f"After swapping: x = {x}, y = {y}")
+
+def average_three_numbers():
+    a, b, c = [float(input(f"Enter number {i+1}: ")) for i in range(3)]
+    print("Average:", (a + b + c) / 3)
+
+def triangle_calculations():
+    base = float(input("Enter base of the triangle: "))
+    height = float(input("Enter height of the triangle: "))
+    hypotenuse = (base**2 + height**2) ** 0.5
+    print(f"Area: {(base * height) / 2}\nPerimeter: {base + height + hypotenuse}")
+
+# Uncomment any function below to test
+# square_area()
+# calculate_change()
+# basic_operations()
+# discounted_price()
+# sheep_profit()
+# swap_variables()
+# average_three_numbers()
+# triangle_calculations()
