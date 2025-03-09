@@ -1,0 +1,76 @@
+def is_leap_year(year):
+    try:
+        if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+            return True
+        return False
+    except Exception as e:
+        return f"Error: {e}"
+
+def number_classification(number):
+    try:
+        if number > 0:
+            return "Positive"
+        elif number < 0:
+            return "Negative"
+        else:
+            return "Zero"
+    except Exception as e:
+        return f"Error: {e}"
+
+def calculate_discount(total_purchase):
+    try:
+        if total_purchase > 100000:
+            return total_purchase * 0.9  # 10% discount
+        elif total_purchase > 50000:
+            return total_purchase * 0.95  # 5% discount
+        else:
+            return total_purchase  # No discount
+    except Exception as e:
+        return f"Error: {e}"
+
+def student_pass_fail(math, science, english):
+    try:
+        average = (math + science + english) / 3
+        below_70 = sum(1 for score in [math, science, english] if score < 70)
+        perfect_score = any(score == 100 for score in [math, science, english])
+        
+        if average > 75 and below_70 <= 1 or perfect_score:
+            return "Pass"
+        else:
+            return "Fail"
+    except Exception as e:
+        return f"Error: {e}"
+
+if __name__ == "__main__":
+    while True:
+        print("\nChoose an operation:")
+        print("1. Check Leap Year")
+        print("2. Check Number Classification")
+        print("3. Calculate Year-End Discount")
+        print("4. Check Student Pass/Fail Status")
+        print("5. Exit")
+        
+        try:
+            choice = input("Enter your choice (1-5): ")
+            
+            if choice == "1":
+                year = int(input("Enter a year: "))
+                print(f"{year} is a leap year? {is_leap_year(year)}")
+            elif choice == "2":
+                num = float(input("Enter a number: "))
+                print(f"The number is {number_classification(num)}.")
+            elif choice == "3":
+                total = float(input("Enter total purchase amount: "))
+                print(f"Total amount after discount: {calculate_discount(total)}")
+            elif choice == "4":
+                math = float(input("Enter Math score: "))
+                science = float(input("Enter Science score: "))
+                english = float(input("Enter English score: "))
+                print(f"Result: {student_pass_fail(math, science, english)}")
+            elif choice == "5":
+                print("Exiting program. Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please try again.")
+        except Exception as e:
+            print(f"Input error: {e}. Please try again.")
