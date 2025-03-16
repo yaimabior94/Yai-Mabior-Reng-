@@ -1,0 +1,187 @@
+# Define matrices
+A <- matrix(c(1, 3, 2, 4), nrow = 2, ncol = 2)
+B <- matrix(c(5, 7, 6, 8), nrow = 2, ncol = 2)
+
+# Matrix Addition
+addition <- A + B
+cat("Matrix Addition:\n")
+print(addition)
+
+# Matrix Subtraction
+subtraction <- A - B
+cat("\nMatrix Subtraction:\n")
+print(subtraction)
+
+# Matrix Multiplication
+multiplication <- A %*% B
+cat("\nMatrix Multiplication:\n")
+print(multiplication)
+
+# Transpose of Matrix A
+transpose_A <- t(A)
+cat("\nTranspose of Matrix A:\n")
+print(transpose_A)
+
+# Determinant of Matrix A
+det_A <- det(A)
+cat("\nDeterminant of Matrix A:\n")
+print(det_A)
+
+
+# Python Code
+import numpy as np
+
+A = np.array([[1,2], [3,4]])
+B = np.array([[5,6], [7,8]])
+
+addition = A + B
+subtration = A - B
+multiplication = np.dot(A, B)
+transpose_A = np.transpose(A)
+det_A = np.linalg.det(A)
+inverse_A = np.linalg.inv(A)
+print(addition)
+print(subtration)
+print(multiplication)
+print(transpose_A)
+print(det_A)
+print(inverse_A)
+
+
+# Excel
+# Matrix Addition:
+# In cells A1:B2, enter matrix A.
+# In cells C1:D2, enter matrix B.
+# In cells E1:F2, use the formula =A1+C1 to add each element.
+# Matrix Subtraction:
+
+# In cells E1:F2, use =A1-C1 to subtract the corresponding elements.
+# Matrix Multiplication:
+
+# Select cells E1:F2, enter the formula =MMULT(A1:B2, C1:D2) to multiply matrices.
+# Transpose:
+
+# To transpose matrix A, use the formula =TRANSPOSE(A1:B2) in a new range.
+# Determinant:
+
+# Use =MDETERM(A1:B2) to find the determinant of matrix A.
+# Inverse:
+
+# Use =MINVERSE(A1:B2) to find the inverse of matrix A.
+
+
+<?php
+
+// Define matrices A and B
+$A = array(array(1, 2), array(3, 4));
+$B = array(array(5, 6), array(7, 8));
+
+// Matrix Addition
+$addition = array();
+for ($i = 0; $i < 2; $i++) {
+    for ($j = 0; $j < 2; $j++) {
+        $addition[$i][$j] = $A[$i][$j] + $B[$i][$j];
+    }
+}
+echo "Matrix Addition:\n";
+print_r($addition);
+
+// Matrix Subtraction
+$subtraction = array();
+for ($i = 0; $i < 2; $i++) {
+    for ($j = 0; $j < 2; $j++) {
+        $subtraction[$i][$j] = $A[$i][$j] - $B[$i][$j];
+    }
+}
+echo "\nMatrix Subtraction:\n";
+print_r($subtraction);
+
+// Matrix Multiplication
+$multiplication = array();
+for ($i = 0; $i < 2; $i++) {
+    for ($j = 0; $j < 2; $j++) {
+        $multiplication[$i][$j] = 0;
+        for ($k = 0; $k < 2; $k++) {
+            $multiplication[$i][$j] += $A[$i][$k] * $B[$k][$j];
+        }
+    }
+}
+echo "\nMatrix Multiplication:\n";
+print_r($multiplication);
+
+// Transpose of Matrix A
+$transpose_A = array();
+for ($i = 0; $i < 2; $i++) {
+    for ($j = 0; $j < 2; $j++) {
+        $transpose_A[$j][$i] = $A[$i][$j];
+    }
+}
+echo "\nTranspose of Matrix A:\n";
+print_r($transpose_A);
+
+// Determinant of Matrix A (2x2)
+$det_A = ($A[0][0] * $A[1][1]) - ($A[0][1] * $A[1][0]);
+echo "\nDeterminant of Matrix A:\n";
+echo $det_A . "\n";
+
+// Inverse of Matrix A (2x2)
+$det_A = ($A[0][0] * $A[1][1]) - ($A[0][1] * $A[1][0]);
+if ($det_A != 0) {
+    $inverse_A = array(
+        array($A[1][1] / $det_A, -$A[0][1] / $det_A),
+        array(-$A[1][0] / $det_A, $A[0][0] / $det_A)
+    );
+    echo "\nInverse of Matrix A:\n";
+    print_r($inverse_A);
+} else {
+    echo "\nMatrix A is singular and cannot be inverted.\n";
+}
+
+?>
+
+
+-- MySQL Example of matrix addition
+CREATE TABLE matrix_A (row INT, col INT, value INT);
+CREATE TABLE matrix_B (row INT, col INT, value INT);
+
+-- Insert elements of matrices A and B
+INSERT INTO matrix_A VALUES (1, 1, 1), (1, 2, 2), (2, 1, 3), (2, 2, 4);
+INSERT INTO matrix_B VALUES (1, 1, 5), (1, 2, 6), (2, 1, 7), (2, 2, 8);
+
+-- Matrix addition
+SELECT A.row, A.col, A.value + B.value AS sum
+FROM matrix_A A
+JOIN matrix_B B ON A.row = B.row AND A.col = B.col;
+
+
+# Define matrices
+A <- matrix(c(1, 3, 2, 4), nrow = 2, ncol = 2)
+B <- matrix(c(5, 7, 6, 8), nrow = 2, ncol = 2)
+
+# Matrix Addition
+addition <- A + B
+cat("Matrix Addition:\n")
+print(addition)
+
+# Matrix Subtraction
+subtraction <- A - B
+cat("\nMatrix Subtraction:\n")
+print(subtraction)
+
+# Matrix Multiplication
+multiplication <- A %*% B
+cat("\nMatrix Multiplication:\n")
+print(multiplication)
+
+# Transpose of Matrix A
+transpose_A <- t(A)
+cat("\nTranspose of Matrix A:\n")
+print(transpose_A)
+
+# Determinant of Matrix A
+det_A <- det(A)
+cat("\nDeterminant of Matrix A:\n")
+print(det_A)
+
+
+
