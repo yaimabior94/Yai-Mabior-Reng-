@@ -1,0 +1,150 @@
+import random
+
+def problem1():
+    num = float(input("Enter a number: "))
+    print("Positive" if num > 0 else "Negative" if num < 0 else "Zero")
+
+def problem2():
+    num = int(input("Enter a number: "))
+    print("Even" if num % 2 == 0 else "Odd")
+
+def problem3():
+    score = int(input("Enter test score (0-100): "))
+    if 80 <= score <= 100:
+        print("Grade: A")
+    elif 70 <= score < 80:
+        print("Grade: B")
+    elif 60 <= score < 70:
+        print("Grade: C")
+    elif 50 <= score < 60:
+        print("Grade: D")
+    else:
+        print("Grade: E")
+
+def problem4():
+    nums = [float(input(f"Enter number {i+1}: ")) for i in range(3)]
+    print("Largest number:", max(nums))
+
+def problem5():
+    year = int(input("Enter a year: "))
+    if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+        print("Leap year")
+    else:
+        print("Not a leap year")
+
+def problem6():
+    num1 = float(input("Enter first number: "))
+    num2 = float(input("Enter second number: "))
+    operator = input("Enter operator (+, -, *, /): ")
+    
+    if operator == '+':
+        print("Result:", num1 + num2)
+    elif operator == '-':
+        print("Result:", num1 - num2)
+    elif operator == '*':
+        print("Result:", num1 * num2)
+    elif operator == '/':
+        if num2 != 0:
+            print("Result:", num1 / num2)
+        else:
+            print("Error: Division by zero is not allowed")
+    else:
+        print("Invalid operator")
+
+def problem7():
+    weight = float(input("Enter weight (kg): "))
+    height = float(input("Enter height (m): "))
+    bmi = weight / (height ** 2)
+    
+    print(f"BMI: {bmi:.2f}")
+    if bmi < 18.5:
+        print("Underweight")
+    elif bmi < 25.0:
+        print("Normal")
+    elif bmi < 30.0:
+        print("Overweight")
+    else:
+        print("Obese")
+
+def problem8():
+    a, b, c = sorted([float(input(f"Enter side {i+1}: ")) for i in range(3)])
+    if a + b > c:
+        if a == b == c:
+            print("Equilateral triangle")
+        elif a == b or b == c:
+            print("Isosceles triangle")
+        else:
+            print("Scalene triangle")
+    else:
+        print("Not a valid triangle")
+
+def problem9():
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+
+    if username == "admin" and password == "admin123":
+        print("Admin access granted")
+    elif username == "user" and password == "user123":
+        print("Limited access granted")
+    elif username == "guest":
+        print("Minimal access granted")
+    else:
+        print("Access denied")
+
+def problem10():
+    choices = ["rock", "paper", "scissors"]
+    user_score = 0
+    comp_score = 0
+    
+    while True:
+        user_choice = input("Enter rock, paper, or scissors (or 'quit' to quit): ").lower()
+        if user_choice == 'quit':
+            print(f"Final Score - You: {user_score}, Computer: {comp_score}")
+            break
+        
+        if user_choice not in choices:
+            print("Invalid choice. Try again.")
+            continue
+        
+        comp_choice = random.choice(choices)
+        print("Computer chose:", comp_choice)
+
+        if user_choice == comp_choice:
+            print("It's a tie!")
+        elif (user_choice == "rock" and comp_choice == "scissors") or \
+             (user_choice == "scissors" and comp_choice == "paper") or \
+             (user_choice == "paper" and comp_choice == "rock"):
+            print("You win!")
+            user_score += 1
+        else:
+            print("Computer wins!")
+            comp_score += 1
+        
+        print(f"Score - You: {user_score}, Computer: {comp_score}")
+
+if __name__ == "__main__":
+    problems = {
+        1: problem1,
+        2: problem2,
+        3: problem3,
+        4: problem4,
+        5: problem5,
+        6: problem6,
+        7: problem7,
+        8: problem8,
+        9: problem9,
+        10: problem10
+    }
+
+    while True:
+        print("\nChoose a problem to run (1-10) or 0 to exit:")
+        try:
+            choice = int(input())
+            if choice == 0:
+                break
+            elif choice in problems:
+                problems[choice]()
+            else:
+                print("Invalid choice. Try again.")
+        except ValueError:
+            print("Please enter a valid number.")
