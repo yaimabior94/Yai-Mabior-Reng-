@@ -1,0 +1,43 @@
+# Member data
+data = [
+    {"name": "Nugraha", "birtdate": "1989-09-13"},
+    {"name": "John", "birtdate": "1990-01-01"},
+    {"name": "Jane", "birtdate": "1992-02-02"},
+    {"name": "Doe", "birtdate": "1994-03-03"}
+]
+
+# Function to generate number sequences
+def generate_sequences():
+    # Sequence 1
+    deret1 = [50, 48, 44, 38, 30, 20, 8, -6]
+    print("Deret 1:", ', '.join(map(str, deret1)))
+
+    # Sequence 2 (Fibonacci)
+    deret2 = [2, 3]
+    for _ in range(6):
+        deret2.append(deret2[-1] + deret2[-2])
+    print("Deret 2:", ', '.join(map(str, deret2)))
+
+    # Sequence 3
+    deret3 = [40, 39, 36, 31, 24, 15, 4, -9]
+    print("Deret 3:", ', '.join(map(str, deret3)))
+
+    # Sequence 4
+    deret4 = [100, 99, 96, 91, 84, 75, 64, 51]
+    print("Deret 4:", ', '.join(map(str, deret4)))
+
+    # Sequence 5 (Fibonacci)
+    deret5 = [1, 1]
+    for _ in range(6):
+        deret5.append(deret5[-1] + deret5[-2])
+    print("Deret 5:", ' '.join(map(str, deret5)))
+
+# Function to display member information
+def display_members():
+    print("\nMember List:")
+    for member in data:
+        print(f"Name: {member['name']}, Birthdate: {member['birtdate']}")
+
+# Run functions
+generate_sequences()
+display_members()
