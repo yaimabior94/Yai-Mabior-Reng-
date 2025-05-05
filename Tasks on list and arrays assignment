@@ -1,0 +1,92 @@
+# a. Create a list of 10 numbers
+numbers = [5, 8, 2, 10, 3, 7, 6, 1, 4, 9]
+
+# b. Sum all the elements
+total_sum = sum(numbers)
+
+# c. Display the list and the sum
+print("List of numbers:", numbers)
+print("Total sum of elements:", total_sum)
+
+
+# a. Create a list with 5 fruit names
+fruits = ["Apple", "Banana", "Mango", "Orange", "Grapes"]
+
+# b. Display all contents
+print("Fruit list:", fruits)
+
+# c. Display the fruit at index 2
+print("Fruit at index 2:", fruits[2])
+
+# d. Add a new fruit
+fruits.append("Pineapple")
+
+# e. Display the updated list
+print("Updated fruit list:", fruits)
+
+
+# a. Accept numbers separated by spaces
+user_input = input("Enter numbers separated by spaces: ")
+numbers = list(map(float, user_input.split()))
+
+# b. Calculate sum
+total = sum(numbers)
+
+# c. Calculate average
+average = total / len(numbers)
+
+# d. Find largest and smallest
+largest = max(numbers)
+smallest = min(numbers)
+
+# Display results
+print("Numbers:", numbers)
+print("Sum:", total)
+print("Average:", average)
+print("Largest:", largest)
+print("Smallest:", smallest)
+
+
+import statistics
+
+# a. Input numbers
+user_input = input("Enter at least 5 numbers separated by spaces: ")
+numbers = list(map(float, user_input.split()))
+
+# b. Calculate stats
+minimum = min(numbers)
+maximum = max(numbers)
+average = sum(numbers) / len(numbers)
+median = statistics.median(numbers)
+
+# c. Display results
+print("Numbers (sorted):", sorted(numbers))
+print("Minimum:", minimum)
+print("Maximum:", maximum)
+print("Average:", average)
+print("Median:", median)
+
+
+# a. Empty shopping list
+shopping_list = []
+
+# b. Input 5 items
+for i in range(5):
+    item = input(f"Enter item {i+1}: ")
+    shopping_list.append(item)
+
+# c. Display entire list
+print("Shopping List:", shopping_list)
+
+# d. Remove a purchased item
+purchased = input("Enter the item you have purchased: ")
+if purchased in shopping_list:
+    shopping_list.remove(purchased)
+    print(f"{purchased} removed from the list.")
+else:
+    print(f"{purchased} not found in the list.")
+
+# e. Display updated list
+print("Updated Shopping List:", shopping_list)
+
+
