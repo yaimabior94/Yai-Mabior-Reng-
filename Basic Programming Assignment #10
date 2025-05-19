@@ -1,0 +1,184 @@
+# TASK 1: OPERATIONS ON TUPLE
+def tuple_operations():
+    print("\n--- TASK 1: TUPLE OPERATIONS ---")
+    fruits = tuple(input(f"Enter fruit {i+1}: ") for i in range(5))
+    print("Fruits Tuple:", fruits)
+
+    search_fruit = input("Enter a fruit name to search: ")
+    if search_fruit in fruits:
+        print(f"{search_fruit} is in the tuple.")
+    else:
+        print(f"{search_fruit} is NOT in the tuple.")
+
+    print("\nOccurrences of each fruit:")
+    for fruit in set(fruits):
+        print(f"{fruit}: {fruits.count(fruit)}")
+
+
+# TASK 2: STUDENT DATA MANAGEMENT USING DICTIONARY
+def student_data_management():
+    students = {}
+
+    def add_student():
+        nim = input("Enter NIM: ")
+        name = input("Enter Name: ")
+        major = input("Enter Major: ")
+        gpa = float(input("Enter GPA: "))
+        students[nim] = {"Name": name, "Major": major, "GPA": gpa}
+        print("Student added successfully.")
+
+    def display_all():
+        if not students:
+            print("No student data available.")
+            return
+        print("\nAll Student Data:")
+        for nim, data in students.items():
+            print(f"NIM: {nim}, Name: {data['Name']}, Major: {data['Major']}, GPA: {data['GPA']}")
+
+    def search_student():
+        nim = input("Enter NIM to search: ")
+        if nim in students:
+            data = students[nim]
+            print(f"NIM: {nim}, Name: {data['Name']}, Major: {data['Major']}, GPA: {data['GPA']}")
+        else:
+            print("Student not found.")
+
+    def delete_student():
+        nim = input("Enter NIM to delete: ")
+        if students.pop(nim, None):
+            print("Student deleted successfully.")
+        else:
+            print("Student not found.")
+
+    while True:
+        print("\n--- TASK 2: STUDENT DATA MANAGEMENT ---")
+        print("1. Add Student")
+        print("2. Display All Students")
+        print("3. Search Student by NIM")
+        print("4. Delete Student by NIM")
+        print("5. Back to Main Menu")
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            add_student()
+        elif choice == '2':
+            display_all()
+        elif choice == '3':
+            search_student()
+        elif choice == '4':
+            delete_student()
+        elif choice == '5':
+            break
+        else:
+            print("Invalid choice!")
+
+
+# TASK 3: INVENTORY MANAGEMENT SYSTEM
+def inventory_management():
+    inventory = {}
+
+    def add_item():
+        name = input("Enter Item Name: ")
+        price = float(input("Enter Price: "))
+        stock = int(input("Enter Stock: "))
+        inventory[name] = (price, stock)
+        print("Item added successfully.")
+
+    def display_all():
+        if not inventory:
+            print("No items in inventory.")
+            return
+        print("\nAll Items:")
+        print("{:<20} {:<10} {:<10}".format("Item Name", "Price", "Stock"))
+        for name, (price, stock) in inventory.items():
+            print("{:<20} {:<10} {:<10}".format(name, price, stock))
+
+    def search_item():
+        name = input("Enter item name to search: ")
+        if name in inventory:
+            price, stock = inventory[name]
+            print(f"Item: {name}, Price: {price}, Stock: {stock}")
+        else:
+            print("Item not found.")
+
+    def update_stock():
+        name = input("Enter item name to update stock: ")
+        if name in inventory:
+            new_stock = int(input("Enter new stock quantity: "))
+            price = inventory[name][0]
+            inventory[name] = (price, new_stock)
+            print("Stock updated.")
+        else:
+            print("Item not found.")
+
+    def delete_item():
+        name = input("Enter item name to delete: ")
+        if inventory.pop(name, None):
+            print("Item deleted.")
+        else:
+            print("Item not found.")
+
+    def data_analysis():
+        if not inventory:
+            print("No items for analysis.")
+            return
+        highest = max(inventory.items(), key=lambda x: x[1][0])
+        lowest = min(inventory.items(), key=lambda x: x[1][0])
+        total_value = sum(price * stock for price, stock in inventory.values())
+        print(f"Most expensive item: {highest[0]} - Price: {highest[1][0]}")
+        print(f"Least expensive item: {lowest[0]} - Price: {lowest[1][0]}")
+        print(f"Total stock value: {total_value}")
+
+    while True:
+        print("\n--- TASK 3: INVENTORY MANAGEMENT ---")
+        print("1. Add New Item")
+        print("2. Display All Items")
+        print("3. Search for an Item")
+        print("4. Update Item Stock")
+        print("5. Delete Item")
+        print("6. Data Analysis")
+        print("7. Back to Main Menu")
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            add_item()
+        elif choice == '2':
+            display_all()
+        elif choice == '3':
+            search_item()
+        elif choice == '4':
+            update_stock()
+        elif choice == '5':
+            delete_item()
+        elif choice == '6':
+            data_analysis()
+        elif choice == '7':
+            break
+        else:
+            print("Invalid option!")
+
+# MAIN MENU
+def main():
+    while True:
+        print("\n=== MAIN MENU ===")
+        print("1. Tuple Operations (Fruits)")
+        print("2. Student Data Management")
+        print("3. Inventory Management System")
+        print("4. Exit")
+        option = input("Select an option: ")
+
+        if option == '1':
+            tuple_operations()
+        elif option == '2':
+            student_data_management()
+        elif option == '3':
+            inventory_management()
+        elif option == '4':
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid selection. Try again.")
+
+# Run the program
+if __name__ == "__main__":
+    main()
