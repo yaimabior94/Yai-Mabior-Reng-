@@ -1,0 +1,183 @@
+import pandas as pd
+import random
+from datetime import datetime, timedelta
+import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl.styles import Font, Alignment
+from openpyxl.worksheet.table import Table, TableStyleInfo
+
+# === Load Excel file and fix column headers ===
+file_path = "Mapping Jadwal Mengajar Prodi Teknik Informatika.xlsx"
+raw_df = pd.read_excel(file_path, sheet_name=0, header=None)
+
+# Auto-detect header row
+for i in range(5):
+    possible_header = raw_df.iloc[i].astype(str).str.lower()
+    if {"nama dosen", "mata kuliah", "sks", "kelas"}.issubset(set(possible_header)):
+        header_row_index = i
+        break
+else:
+    raise ValueError(" Header row with required columns not found.")
+
+# Reload with correct header row
+df = pd.read_excel(file_path, sheet_name=0, header=header_row_index)
+df.columns = [col.strip() for col in df.columns]
+print(f"Loaded Columns: {list(df.columns)}")
+
+# Rename columns
+df.rename(columns={
+    "Nama Dosen": "Name",
+    "Mata Kuliah": "Subject",
+    "SKS": "Credit",
+    "Kelas": "Class",
+    "Hari": "Available Day",
+    "Jam": "Available Times"
+}, inplace=True)
+
+# Convert days
+day_map = {"Senin": "Monday", "Jumat": "Friday"}
+df["Available Day"] = df["Available Day"].map(day_map).fillna(df["Available Day"])
+
+# Clean and validate
+required_cols = ["Name", "Subject", "Credit", "Class"]
+for col in required_cols:
+    if col not in df.columns:
+        raise ValueError(f"Missing required column: {col}")
+df.dropna(subset=required_cols, inplace=True)
+df.reset_index(drop=True, inplace=True)
+
+# === Generate Time Slots ===
+def generate_time_slots(start, end, slot_duration=50):
+    start = start.replace('.', ':').strip()
+    end = end.replace('.', ':').strip()
+    slots = []
+    current = datetime.strptime(start, "%H:%M")
+    end_time = datetime.strptime(end, "%H:%M")
+    while current + timedelta(minutes=slot_duration) <= end_time:
+        slot_end = current + timedelta(minutes=slot_duration)
+        slots.append(f"{current.strftime('%H:%M')} - {slot_end.strftime('%H:%M')}")
+        current = slot_end
+    return slots
+
+daily_slots = generate_time_slots("08:00", "20:00", 50)
+
+# === Rooms and Floors ===
+def create_rooms(floor):
+    return [f"B{floor}{chr(c)}" for c in range(ord('A'), ord('H'))]
+
+rooms_by_floor = {
+    "3": create_rooms("3"),
+    "4": create_rooms("4"),
+    "5": create_rooms("5"),
+}
+
+# === Department Classification ===
+def get_department(class_code):
+    code = str(class_code).upper()
+    if "TI" in code:
+        return "TI"
+    elif "SI" in code:
+        return "SI"
+    elif "DKV" in code:
+        return "DKV"
+    return "Unknown"
+
+def assign_room(dept):
+    floor = "5" if dept == "DKV" else random.choice(["3", "4"])
+    return random.choice(rooms_by_floor[floor])
+
+# === Schedule Assignment ===
+schedule = []
+used_slots = {}
+lecturer_schedule = {}
+class_day_schedule = {}
+
+for _, row in df.iterrows():
+    lecturer = row["Name"]
+    subject = row["Subject"]
+    credit = int(row["Credit"])
+    duration = credit * 50
+    blocks_needed = duration // 50
+    classes = [c.strip() for c in str(row["Class"]).split(",")]
+    days = [d.strip() for d in str(row["Available Day"]).split(",")]
+    time_range = str(row.get("Available Times", "All")).strip()
+
+    if time_range.lower() == "all":
+        available_slots = daily_slots
+    else:
+        try:
+            start_time, end_time = [t.replace('.', ':').strip() for t in time_range.split(" - ")]
+            available_slots = generate_time_slots(start_time, end_time)
+        except Exception:
+            print(f" Invalid time format for {lecturer}: {time_range}")
+            continue
+
+    for cls in classes:
+        dept = get_department(cls)
+        for day in days:
+            if (cls, day) not in class_day_schedule:
+                class_day_schedule[(cls, day)] = set()
+
+            assigned = False
+            for i in range(len(available_slots) - blocks_needed + 1):
+                block = available_slots[i:i + blocks_needed]
+                if len(block) < blocks_needed:
+                    continue
+
+                if any((lecturer, day, t) in lecturer_schedule for t in block):
+                    continue
+                if any(t in class_day_schedule[(cls, day)] for t in block):
+                    continue
+
+                for _ in range(10):
+                    temp_room = assign_room(dept)
+                    if all((day, t, temp_room) not in used_slots for t in block):
+                        for t in block:
+                            used_slots[(day, t, temp_room)] = True
+                            lecturer_schedule[(lecturer, day, t)] = True
+                            class_day_schedule[(cls, day)].add(t)
+
+                        schedule.append({
+                            "Lecturer": lecturer,
+                            "Subject": subject,
+                            "Class": cls,
+                            "Day": day,
+                            "Time": f"{block[0]} to {block[-1].split(' - ')[1]}",
+                            "Room": temp_room
+                        })
+                        assigned = True
+                        break
+                if assigned:
+                    break
+
+            if not assigned:
+                print(f" Could not assign {lecturer} ({cls}) on {day}")
+
+# === Export to Excel ===
+final_schedule = pd.DataFrame(schedule)
+final_schedule.sort_values(by=["Day", "Time", "Class"], inplace=True)
+
+wb = openpyxl.Workbook()
+ws = wb.active
+ws.title = "Schedule"
+
+for r_idx, row in enumerate(dataframe_to_rows(final_schedule, index=False, header=True), start=1):
+    ws.append(row)
+    if r_idx == 1:
+        for cell in ws[r_idx]:
+            cell.font = Font(bold=True)
+            cell.alignment = Alignment(horizontal="center")
+
+for col in ws.columns:
+    max_length = max(len(str(cell.value)) if cell.value else 0 for cell in col)
+    col_letter = col[0].column_letter
+    ws.column_dimensions[col_letter].width = max_length + 2
+
+tab = Table(displayName="ScheduleTable", ref=f"A1:F{ws.max_row}")
+tab.tableStyleInfo = TableStyleInfo(name="TableStyleMedium9", showFirstColumn=False,
+                                    showLastColumn=False, showRowStripes=True, showColumnStripes=False)
+ws.add_table(tab)
+
+output_file = "Generated_Schedule_Styled.xlsx"
+wb.save(output_file)
+print(f"\n Styled schedule saved to: {output_file}")
